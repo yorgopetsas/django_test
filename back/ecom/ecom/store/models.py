@@ -1,0 +1,58 @@
+from django.db import models
+import datetime 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+class Customer(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=100)
+    password = models.EmailField(max_length=100)
+    company = models.CharField(max_length=50)
+    nif = models.CharField(max_length=50)
+    clave_id = models.CharField(max_length=12)
+    address = models.CharField(max_length=100)
+    country = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, null=True)
+    description = models.CharField(max_length=250, default="", blank=True, null=True)
+    media = models.ImageField(upload_to="uploads/product/")
+    short_description = models.CharField(max_length=100, default="", blank=True, null=True)
+    reference = models.CharField(max_length=100, default="", blank=True, null=True)
+    manufacturer_reference = models.CharField(max_length=100, default="", blank=True, null=True)
+    stock = models.IntegerField(default=0)
+    min_order_qty = models.CharField(max_length=100, default="", blank=True, null=True)
+    brand = models.CharField(max_length=100, default="", blank=True, null=True)
+    hashtag = models.CharField(max_length=100, default="", blank=True, null=True)
+    dimensions = models.CharField(max_length=100, default="", blank=True, null=True)
+    url = models.CharField(max_length=100, default="", blank=True, null=True)
+    title = models.CharField(max_length=100, default="", blank=True, null=True)
+    visible = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+    
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    address = models.CharField(max_length=100, default="", blank=True, null=True) 
+    phone = models.CharField(max_length=20, blank=True, null=True) 
+    date = models.DateField(default=datetime.datetime.today)
+    status = models.BooleanField(default=False)
+    customer_reference = models.CharField(max_length=20, blank=True, null=True) 
+
+    def __str__(self):
+        return self.product

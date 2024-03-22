@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form method="POST" action="{% url 'register' %}">
+                    {%  csrf_token %}
+                    <br /><br />
+                    {{ form.as_p}}
+                    <button type="submit" class="btn btn-secondary">Register</button>
+                    
+                    <!-- <button type="submit" class="btn btn-secondary">Login</button> -->
+                </form>
+            </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

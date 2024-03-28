@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from store.models import Product
+from colorfield.fields import ColorField
 
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -19,6 +20,26 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return f'Shipping Address - {str(self.id)}'
+
+class OrderStatus(models.Model):
+
+    status_name = models.CharField(max_length=100)
+    status_visible = models.BooleanField(default=False)
+    status_color = ColorField()
+    status_send_email = models.BooleanField(default=False)
+    status_email_template = models.CharField(max_length=100)
+    status_paid = models.BooleanField(default=False)
+    status_sent = models.BooleanField(default=False)
+    status_delivered = models.BooleanField(default=False)
+    status_attach_file = models.BooleanField(default=False)
+    status_file_url = models.URLField()
+    status_hide_for_user = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.status_name)
+
+    class Meta:
+        verbose_name_plural = "OrderStatuses"
 
 # Create order Model
 class Order(models.Model):

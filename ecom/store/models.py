@@ -37,21 +37,21 @@ class Brand(models.Model):
     brand_description = models.CharField(max_length=2500, default="", blank=True, null=True)
     brand_image = models.ImageField(upload_to="uploads/brand/",  blank=True, null=True)
     brand_title = models.CharField(max_length=100, default="", blank=True, null=True)
-    brand_url = models.CharField(max_length=100, default="", blank=True, null=True)
-    brand_allowed_groups = models.ManyToManyField(User, related_name="groups", blank=True, null=True)
+    brand_url = models.URLField(blank=True, null=True)
+    brand_allowed_groups = models.ManyToManyField(User, related_name="brand_groups", blank=True)
     
 
     def __str__(self):
-        return str(self.name)
+        return str(self.brand_name)
 
 class Category(models.Model):
     name = models.CharField(max_length=50, null=True)
     category_title = models.CharField(max_length=100, default="", blank=True, null=True)
-    category_url = models.CharField(max_length=100, default="", blank=True, null=True)
+    category_url = models.URLField(blank=True, null=True)
     category_visible = models.BooleanField(default=False)
     category_parent = models.CharField(max_length=50, blank=True, null=True)
     category_description = models.CharField(max_length=160, default="", blank=True, null=True)
-    category_allowed_groups= models.ManyToManyField(User, related_name="groups", blank=True, null=True)
+    category_allowed_groups= models.ManyToManyField(User, related_name="user_groups", blank=True)
     category_image = models.ImageField(upload_to="uploads/category/",  blank=True, null=True)
 
     def __str__(self):
@@ -59,7 +59,6 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
-
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)
@@ -96,7 +95,7 @@ class Product(models.Model):
     dim_width = models.IntegerField(default=0)
     dim_debt = models.IntegerField(default=0)
     dim_weight = models.IntegerField(default=0)
-    url = models.CharField(max_length=100, default="", blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
     title = models.CharField(max_length=100, default="", blank=True, null=True)
     visible = models.BooleanField(default=False)
 
@@ -123,22 +122,23 @@ class Discount(models.Model):
 
     discount_name = models.CharField(max_length=50, null=True)
     discount_description = models.CharField(max_length=250000, default="", blank=True, null=True)
-    discount_type = models.CharField(max_length=20, choices=DISCOUNT_CHOICES)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_CHOICES, null=True)
     discount_priority = models.IntegerField(default=0, blank=True, null=True)
     discount_code = models.CharField(max_length=20, blank=True, null=True)
     discount_active = models.BooleanField(default=False)
-    discount_scope_user = models.ManyToManyField(User, related_name='users', blank=True, null=True)
-    discount_scope_user_group = models.ManyToManyField(Group, related_name='groups', blank=True, null=True)
-    discount_scope_product = models.ManyToManyField(Product, related_name='products', blank=True, null=True)
+    discount_scope_user = models.ManyToManyField(User, related_name='users', blank=True)
+    discount_scope_user_group = models.ManyToManyField(Group, related_name='groups', blank=True)
+    discount_scope_product = models.ManyToManyField(Product, related_name='products', blank=True)
     discount_scope_category = models.ManyToManyField(Category, related_name='categories', blank=True)
     discount_scope_brand = models.ManyToManyField(Brand, related_name='brands', blank=True)
     discount_validity_start = models.CharField(max_length=12, null=True)
     discount_validity_end = models.CharField(max_length=12, null=True)
     discount_min_order_value = models.IntegerField(default=0, blank=True, null=True)
     discount_use_limit = models.IntegerField(default=0, blank=True, null=True)
+    discount_use_limit_per_user = models.IntegerField(default=0, blank=True, null=True)
     discount_stop_other_discounts = models.BooleanField(default=False)
     discount_free_shipping = models.BooleanField(default=False)
-    discount_fix_or_percentage = models.CharField(max_length=20, choices=FIX_PERC_CHOICES)
+    discount_fix_or_percentage = models.CharField(max_length=20, choices=FIX_PERC_CHOICES, null=True)
     discount_amount = models.IntegerField(default=0, blank=True, null=True)
 
     def __str__(self):

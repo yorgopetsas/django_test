@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "store",
     "cart",
     "payment",
+    'colorfield',
 ]
 
 MIDDLEWARE = [

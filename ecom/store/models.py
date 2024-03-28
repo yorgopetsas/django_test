@@ -80,14 +80,14 @@ class Category(models.Model):
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=20)
     email = models.EmailField(max_length=100)
-    password = models.EmailField(max_length=100)
     company = models.CharField(max_length=50)
-    nif = models.CharField(max_length=50)
-    clave_id = models.CharField(max_length=12)
-    address = models.CharField(max_length=100)
     country = models.CharField(max_length=15)
+    nif = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
+    password = models.EmailField(max_length=100)
+    clave_id = models.CharField(max_length=12, blank=True, null=True)
+    phone = models.CharField(max_length=20)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

@@ -1,14 +1,11 @@
 from django.contrib import admin
-from .models import Category, Customer, Product, Order, Profile, Service, Discount, Brand
-from payment.models import OrderStatus
+from .models import Category, Customer, Product, Profile, Service, Discount, Brand
 from django.contrib.auth.models import User
 
 admin.site.register(Category)
 admin.site.register(Customer)
 admin.site.register(Brand)
 admin.site.register(Product)
-admin.site.register(Order)
-admin.site.register(OrderStatus)
 admin.site.register(Profile)
 admin.site.register(Service)
 admin.site.register(Discount)

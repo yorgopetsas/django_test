@@ -2,6 +2,9 @@ from django.db import models
 import datetime 
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
+# T
+from django.contrib import admin
+from django.forms.models import BaseInlineFormSet
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -18,13 +21,11 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user.username)
 
-# Create Default Profile
 def create_profile(sender, instance, created, **kwargs):
     if created:
         user_profile = Profile(user=instance)
         user_profile.save()
 
-# Automate initial profile creation
 post_save.connect(create_profile, sender=User)
 
 class Service(models.Model):
@@ -59,7 +60,7 @@ class Brand(models.Model):
     brand_title = models.CharField(max_length=100, default="", blank=True, null=True)
     brand_url = models.URLField(blank=True, null=True)
     brand_allowed_groups = models.ManyToManyField(User, related_name="brand_groups", blank=True)
-    
+
     def __str__(self):
         return str(self.brand_name)
 
@@ -124,7 +125,14 @@ class Product(models.Model):
     def __str__(self):
         return str(self.name)
 
+# class DiscountChoice(models.Model):
+#     name = models.CharField(max_length=50)
+
+#     def __str__(self):
+#         return self.name
+    
 class Discount(models.Model):
+
     DISCOUNT_CHOICES = [
         ('General', 'General'),
         ('Loyalty', 'Loyalty'),
@@ -140,7 +148,7 @@ class Discount(models.Model):
 
     discount_name = models.CharField(max_length=50, null=True)
     discount_description = models.CharField(max_length=250000, default="", blank=True, null=True)
-    discount_type = models.CharField(max_length=20, choices=DISCOUNT_CHOICES, null=True)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_CHOICES, blank=True, null=True)
     discount_priority = models.IntegerField(default=0, blank=True, null=True)
     discount_code = models.CharField(max_length=20, blank=True, null=True)
     discount_active = models.BooleanField(default=False)

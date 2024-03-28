@@ -10,8 +10,12 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description }}</p>
+            <h5 class="card-title">Name: {{ product.name }}</h5>
+            <p class="card-text">Stock: {{ product.stock }}</p>
+            <p class="card-text">Description: {{ product.description }}</p>
+            <p class="card-text">Min Qty Alert: {{ product.stock_min_qty_alert }}</p>
+            <p class="card-text">Minimum Order Qty: {{ product.min_order_qty }}</p>
+            <p class="card-text">Short Description: {{ product.short_description }}</p>
             {% if product.sale %}
                 <strike>{{ product.price }}€</strike>
                 {{ product.sale_price }}€

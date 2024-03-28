@@ -16,7 +16,7 @@ class Profile(models.Model):
     old_cart =  models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.username)
 
 # Create Default Profile
 def create_profile(sender, instance, created, **kwargs):
@@ -27,11 +27,22 @@ def create_profile(sender, instance, created, **kwargs):
 # Automate initial profile creation
 post_save.connect(create_profile, sender=User)
 
+class Service(models.Model):
+    service_name = models.CharField(max_length=200)
+    service_code = models.IntegerField()
+
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
+    category_title = models.CharField(max_length=100, default="", blank=True, null=True)
+    category_url = models.CharField(max_length=100, default="", blank=True, null=True)
+    category_visible = models.BooleanField(default=False)
+    category_parent = models.CharField(max_length=50, blank=True, null=True)
+    category_description = models.CharField(max_length=160, default="", blank=True, null=True)
+    category_allowed_groups= models.CharField(max_length=50, blank=True, null=True)
+    category_image = models.ImageField(upload_to="uploads/category/",  blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -52,27 +63,31 @@ class Customer(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, null=True)
-    description = models.CharField(max_length=250, default="", blank=True, null=True)
-    media = models.ImageField(upload_to="uploads/product/")
-    short_description = models.CharField(max_length=100, default="", blank=True, null=True)
-    reference = models.CharField(max_length=100, default="", blank=True, null=True)
+    name = models.CharField(max_length=128)
+    short_description = models.CharField(max_length=160, default="", blank=True, null=True)
+    description = models.CharField(max_length=250000, default="", blank=True, null=True)
+    reference = models.CharField(max_length=20, default="", blank=True, null=True)
     manufacturer_reference = models.CharField(max_length=100, default="", blank=True, null=True)
+    media = models.ImageField(upload_to="uploads/product/", null=True)
     stock = models.IntegerField(default=0)
-    min_order_qty = models.CharField(max_length=100, default="", blank=True, null=True)
+    stock_min_qty_alert = models.IntegerField(default=0)
+    min_order_qty = models.IntegerField(default=1)
+    price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
+    sale = models.BooleanField(default=False)
+    sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
     brand = models.CharField(max_length=100, default="", blank=True, null=True)
     hashtag = models.CharField(max_length=100, default="", blank=True, null=True)
-    dimensions = models.CharField(max_length=100, default="", blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, null=True)
+    dim_height = models.IntegerField(default=0)
+    dim_width = models.IntegerField(default=0)
+    dim_debt = models.IntegerField(default=0)
+    dim_weight = models.IntegerField(default=0)
     url = models.CharField(max_length=100, default="", blank=True, null=True)
     title = models.CharField(max_length=100, default="", blank=True, null=True)
     visible = models.BooleanField(default=False)
-    sale = models.BooleanField(default=False)
-    sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -82,7 +97,8 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True) 
     date = models.DateField(default=datetime.datetime.today)
     status = models.BooleanField(default=False)
-    customer_reference = models.CharField(max_length=20, blank=True, null=True) 
+    customer_reference = models.CharField(max_length=20, blank=True, null=True)
+    order_type = models.CharField(max_length=20, null=True)
 
     def __str__(self):
-        return self.product
+        return str(self.product)

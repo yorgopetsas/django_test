@@ -74,13 +74,12 @@ class Cart():
         product_id = str(product)
         product_qty = int(quantity)
 
-        our_cart = self.cart
-
+        ourcart = self.cart
         # Update Dictionary/cart
-        our_cart[product_id] = product_qty
+        ourcart[product_id] = product_qty
 
         self.session.modified = True
-
+  
         # Deal with logged in user
         if self.request.user.is_authenticated:
             # Get current user profile
@@ -89,9 +88,12 @@ class Cart():
             carty = carty.replace("\'", "\"")
             # Save our carty to Profile Model
             current_user.update(old_cart=carty)
-
+        
         thing = self.cart
         return thing
+
+
+
 
     def delete(self, product):
         product_id = str(product)

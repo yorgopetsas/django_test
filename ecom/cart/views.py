@@ -51,6 +51,6 @@ def cart_update(request):
 
         cart.update(product=product_id, quantity=product_qty)
         response = JsonResponse({'qty':product_qty})
-        messages.success(request, ("Product quantity updated. New quantity {{ product_qty }}"))
+        messages.success(request, f"Product quantity updated. New quantity {product_qty}")
         return response
 

@@ -1,6 +1,6 @@
 from django.db import models
 import datetime 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 
 class Profile(models.Model):
@@ -31,6 +31,19 @@ class Service(models.Model):
     service_name = models.CharField(max_length=200)
     service_code = models.IntegerField()
 
+class Brand(models.Model):
+    brand_name = models.CharField(max_length=50, null=True)
+    brand_visible = models.BooleanField(default=False)
+    brand_description = models.CharField(max_length=2500, default="", blank=True, null=True)
+    brand_image = models.ImageField(upload_to="uploads/brand/",  blank=True, null=True)
+    brand_title = models.CharField(max_length=100, default="", blank=True, null=True)
+    brand_url = models.CharField(max_length=100, default="", blank=True, null=True)
+    brand_allowed_groups = models.ManyToManyField(User, related_name="groups", blank=True, null=True)
+    
+
+    def __str__(self):
+        return str(self.name)
+
 class Category(models.Model):
     name = models.CharField(max_length=50, null=True)
     category_title = models.CharField(max_length=100, default="", blank=True, null=True)
@@ -38,7 +51,7 @@ class Category(models.Model):
     category_visible = models.BooleanField(default=False)
     category_parent = models.CharField(max_length=50, blank=True, null=True)
     category_description = models.CharField(max_length=160, default="", blank=True, null=True)
-    category_allowed_groups= models.CharField(max_length=50, blank=True, null=True)
+    category_allowed_groups= models.ManyToManyField(User, related_name="groups", blank=True, null=True)
     category_image = models.ImageField(upload_to="uploads/category/",  blank=True, null=True)
 
     def __str__(self):
@@ -46,6 +59,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)
@@ -77,7 +91,7 @@ class Product(models.Model):
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
     brand = models.CharField(max_length=100, default="", blank=True, null=True)
     hashtag = models.CharField(max_length=100, default="", blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default="", blank=True, null=True)
+    category = models.ManyToManyField(Category, related_name='products', blank=True)
     dim_height = models.IntegerField(default=0)
     dim_width = models.IntegerField(default=0)
     dim_debt = models.IntegerField(default=0)
@@ -85,6 +99,47 @@ class Product(models.Model):
     url = models.CharField(max_length=100, default="", blank=True, null=True)
     title = models.CharField(max_length=100, default="", blank=True, null=True)
     visible = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.name)
+
+class Discount(models.Model):
+    DISCOUNT_CHOICES = [
+        ('General', 'General'),
+        ('Loyalty', 'Loyalty'),
+        ('Volume', 'Volume'),
+        ('Credit', 'Credit'),
+        ('Product type', 'Product type'),
+        ('Promotion', 'Promotion'),
+    ]
+    FIX_PERC_CHOICES = [
+        ('General', 'General'),
+        ('Loyalty', 'Loyalty'),
+        ('Volume', 'Volume'),
+        ('Credit', 'Credit'),
+        ('Product type', 'Product type'),
+        ('Promotion', 'Promotion'),
+    ]
+
+    discount_name = models.CharField(max_length=50, null=True)
+    discount_description = models.CharField(max_length=250000, default="", blank=True, null=True)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_CHOICES)
+    discount_priority = models.IntegerField(default=0, blank=True, null=True)
+    discount_code = models.CharField(max_length=20, blank=True, null=True)
+    discount_active = models.BooleanField(default=False)
+    discount_scope_user = models.ManyToManyField(User, related_name='users', blank=True, null=True)
+    discount_scope_user_group = models.ManyToManyField(Group, related_name='groups', blank=True, null=True)
+    discount_scope_product = models.ManyToManyField(Product, related_name='products', blank=True, null=True)
+    discount_scope_category = models.ManyToManyField(Category, related_name='categories', blank=True)
+    discount_scope_brand = models.ManyToManyField(Brand, related_name='brands', blank=True)
+    discount_validity_start = models.CharField(max_length=12, null=True)
+    discount_validity_end = models.CharField(max_length=12, null=True)
+    discount_min_order_value = models.IntegerField(default=0, blank=True, null=True)
+    discount_use_limit = models.IntegerField(default=0, blank=True, null=True)
+    discount_stop_other_discounts = models.BooleanField(default=False)
+    discount_free_shipping = models.BooleanField(default=False)
+    discount_fix_or_percentage = models.CharField(max_length=20, choices=FIX_PERC_CHOICES)
+    discount_amount = models.IntegerField(default=0, blank=True, null=True)
 
     def __str__(self):
         return str(self.name)

@@ -160,6 +160,17 @@ def category(request, foo):
         messages.success(request("That Category does not exist"))
         return redirect('home')
     
+
+def brand(request, foo):
+    foo = foo.replace('-', ' ')
+    try:
+        brand = Category.objects.get(name=foo)
+        products = Product.objects.filter(brand=brand)
+        return render(request, 'brands.html', {'products':products, 'brand':brand})
+    except:
+        messages.success(request("That Brand does not exist"))
+        return redirect('home')
+    
 def category_summary(request):
     categories = Category.objects.all()
     return render(request, "category_summary.html", {"categories": categories})

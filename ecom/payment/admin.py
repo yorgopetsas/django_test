@@ -11,8 +11,11 @@ class OrderAdmin(admin.ModelAdmin):
 #     order_date.short_description = 'Order Date'
 #     def total_amount(self, obj):
 #         return obj.calculate_total_amount()
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('order', 'id', 'product', 'user', 'quantity', 'price')
+
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(ShippingAddress)
-admin.site.register(OrderItem)
+admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(OrderStatus)

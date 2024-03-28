@@ -63,6 +63,9 @@ class Brand(models.Model):
     def __str__(self):
         return str(self.brand_name)
 
+    class Meta:
+        verbose_name_plural = "Brands"
+
 class Category(models.Model):
     name = models.CharField(max_length=50, null=True)
     category_title = models.CharField(max_length=100, default="", blank=True, null=True)
@@ -107,7 +110,8 @@ class Product(models.Model):
     price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
     sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
-    brand = models.CharField(max_length=100, default="", blank=True, null=True)
+    # brand = models.CharField(max_length=100, default="", blank=True, null=True)
+    brand = models.ManyToManyField(Brand, related_name='brand', blank=True)
     hashtag = models.CharField(max_length=100, default="", blank=True, null=True)
     category = models.ManyToManyField(Category, related_name='products', blank=True)
     dim_height = models.IntegerField(default=0)

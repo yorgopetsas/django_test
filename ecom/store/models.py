@@ -48,6 +48,9 @@ class Service(models.Model):
     service_collect = models.CharField(max_length=20, choices=COLLECT_CHOICES, blank=True, null=True)
     service_note = models.TextField(max_length=10000, default="", blank=True, null=True)
 
+    def __str__(self):
+        return str(self.service_name)
+
 class Brand(models.Model):
     brand_name = models.CharField(max_length=50, null=True)
     brand_visible = models.BooleanField(default=False)
@@ -57,7 +60,6 @@ class Brand(models.Model):
     brand_url = models.URLField(blank=True, null=True)
     brand_allowed_groups = models.ManyToManyField(User, related_name="brand_groups", blank=True)
     
-
     def __str__(self):
         return str(self.brand_name)
 
@@ -129,12 +131,8 @@ class Discount(models.Model):
         ('Promotion', 'Promotion'),
     ]
     FIX_PERC_CHOICES = [
-        ('General', 'General'),
-        ('Loyalty', 'Loyalty'),
-        ('Volume', 'Volume'),
-        ('Credit', 'Credit'),
-        ('Product type', 'Product type'),
-        ('Promotion', 'Promotion'),
+        ('Fixed', 'Fixed'),
+        ('Percentage', 'Percentage'),
     ]
 
     discount_name = models.CharField(max_length=50, null=True)
@@ -159,7 +157,7 @@ class Discount(models.Model):
     discount_amount = models.IntegerField(default=0, blank=True, null=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.discount_name)
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

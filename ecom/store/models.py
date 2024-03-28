@@ -28,8 +28,25 @@ def create_profile(sender, instance, created, **kwargs):
 post_save.connect(create_profile, sender=User)
 
 class Service(models.Model):
+    MODEL_CHOICES = [
+        ('Orona', 'Orona'),
+        ('Otis', 'Otis'),
+        ('Microvision', 'Microvision'),
+    ]
+    DEPOSIT_CHOICES = [
+        ('Pick Up', 'Pick Up'),
+        ('DropOff', 'DropOff'),
+    ]
+    COLLECT_CHOICES = [
+        ('Pickup', 'Pickup'),
+        ('Delivery', 'Delivery'),
+    ]
     service_name = models.CharField(max_length=200)
     service_code = models.IntegerField()
+    service_model = models.CharField(max_length=20, choices=MODEL_CHOICES, blank=True, null=True)
+    service_deposit = models.CharField(max_length=20, choices=DEPOSIT_CHOICES, blank=True, null=True)
+    service_collect = models.CharField(max_length=20, choices=COLLECT_CHOICES, blank=True, null=True)
+    service_note = models.TextField(max_length=10000, default="", blank=True, null=True)
 
 class Brand(models.Model):
     brand_name = models.CharField(max_length=50, null=True)

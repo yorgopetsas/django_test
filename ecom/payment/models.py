@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from store.models import Product
 from colorfield.fields import ColorField
 
-
 class ShippingAddress(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -45,13 +44,10 @@ class OrderStatus(models.Model):
 
 # Create order Model
 class Order(models.Model):
-    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    shipping_address = models.TextField(max_length=15000, blank=True, null=True)
-    # shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE, blank=True, null=True)
-    
+    order_shipping_address = models.ForeignKey(ShippingAddress,  on_delete=models.CASCADE, null=True, blank=True)
     amount_paid = models.DecimalField(max_digits=9, decimal_places=2)
     date_ordered = models.DateTimeField(auto_now_add=True)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, blank=True, null=True)
@@ -60,7 +56,6 @@ class Order(models.Model):
         return str(self.id)
         # return f'Order - {str(self.id)}'
 
-    
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)

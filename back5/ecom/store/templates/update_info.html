@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+            <div class="col-md-3 offset-md-3">
+                
+                <form method="POST" action="{% url 'update_info' %}">
+                    {%  csrf_token %}
+                    Billing Informatin:
+                    <br /><br />
+                    {{ form.as_p}}
+                    <br /><br />
+                    Shipping Information:
+                    <br /><br />
+                    {{ shipping_form.as_p}}
+                    <br /><br />
+
+                    
+                    <button type="submit" class="btn btn-secondary">Update Info </button>
+                </form>
+                <br />
+                <!-- <a href="{% url 'update_info' %}" class="btn btn-success">Update Info</a> -->
+                <br />
+            </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

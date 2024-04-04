@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 # T
 from django.contrib import admin
 from django.forms.models import BaseInlineFormSet
+# from payment.models import OrderStatus
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -91,7 +92,7 @@ class Customer(models.Model):
     country = models.CharField(max_length=15)
     nif = models.CharField(max_length=50)
     address = models.CharField(max_length=100)
-    password = models.EmailField(max_length=100)
+    password = models.CharField(max_length=100)
     clave_id = models.CharField(max_length=12, blank=True, null=True)
     phone = models.CharField(max_length=20)
 
@@ -178,6 +179,9 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True) 
     date = models.DateField(default=datetime.datetime.today)
     status = models.BooleanField(default=False)
+    # brand_allowed_groups = models.ManyToManyField(User, related_name="brand_groups", blank=True)
+
+    # status = models.ManyToOneRel()
     customer_reference = models.CharField(max_length=20, blank=True, null=True)
     order_type = models.CharField(max_length=20, null=True)
 

@@ -174,3 +174,8 @@ def brand(request, foo):
 def category_summary(request):
     categories = Category.objects.all()
     return render(request, "category_summary.html", {"categories": categories})
+
+# def create_order(request):
+#     products = 
+#     client = 
+#     status = "NewOrder"

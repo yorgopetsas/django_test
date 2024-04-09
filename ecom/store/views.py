@@ -139,7 +139,7 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, ("User Created, please finish your registration."))
-            return redirect("upadte_info")
+            return redirect("update_info")
         else:
             messages.success(request, ("Something went wrong, please try again."))
             return redirect("register")

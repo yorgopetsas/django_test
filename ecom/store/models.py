@@ -66,7 +66,7 @@ class Brand(models.Model):
         return str(self.brand_name)
 
     class Meta:
-        verbose_name_plural = "Brands"
+        verbose_name_plural = "brands"
 
 class Category(models.Model):
     name = models.CharField(max_length=50, null=True)
@@ -82,7 +82,7 @@ class Category(models.Model):
         return str(self.name)
 
     class Meta:
-        verbose_name_plural = "Categories"
+        verbose_name_plural = "categories"
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)

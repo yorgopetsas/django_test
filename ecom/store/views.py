@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Category, Profile
+from .models import Product, Category, Profile, Service
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.models import User
@@ -12,6 +12,20 @@ from django import forms
 from django.db.models import Q
 import json
 from cart.cart import Cart
+
+# def services(request):
+#     foo = foo.replace('-', ' ')
+#     try:
+#         services = Service.objects.get(name=foo)
+#         service = Service.objects.filter(service=service)
+#         return render(request, 'services.html', {'service':service, 'service':service})
+#     except:
+#         messages.success(request("Services does not exist"))
+#         return redirect('home')
+
+def service(request, pk):
+    service = Service.objects.get(id=pk)
+    return render(request, "service.html", {"service":service})
 
 def search(request):
     # Form Filled?

@@ -17,6 +17,7 @@ class Profile(models.Model):
     state = models.CharField(max_length=200, blank=True)
     zipcode = models.CharField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
+    company = models.CharField(max_length=200, blank=True)
     old_cart =  models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
@@ -44,11 +45,12 @@ class Service(models.Model):
         ('Delivery', 'Delivery'),
     ]
     service_name = models.CharField(max_length=200)
+    service_description = models.TextField(max_length=10000, default="", blank=True, null=True)
     service_code = models.IntegerField()
     service_model = models.CharField(max_length=20, choices=MODEL_CHOICES, blank=True, null=True)
+    service_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
     service_deposit = models.CharField(max_length=20, choices=DEPOSIT_CHOICES, blank=True, null=True)
     service_collect = models.CharField(max_length=20, choices=COLLECT_CHOICES, blank=True, null=True)
-    service_note = models.TextField(max_length=10000, default="", blank=True, null=True)
 
     def __str__(self):
         return str(self.service_name)

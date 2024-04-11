@@ -40,22 +40,37 @@
 <div class="container" style="padding: 20px 0 20px 0">
     <div class="row">
             <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-header">
-                    Shipping Info
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{% url 'billing_info' %}">
-                        {% csrf_token %}
-                    {{ shipping_form.as_p }}
+                <div class="card">
+                    <div class="card-header">
+                        Shipping Info
+                    </div>
+                    <div class="card-body">
+                        Name: {{ shipping_info.shipping_full_name }}<br />
+                        Email: {{ shipping_info.shipping_email }}<br />
+                        Address1: {{ shipping_info.shipping_addresss1 }}<br />
+                        Address2: {{ shipping_info.shipping_addresss2 }}<br />
+                        City: {{ shipping_info.shipping_city }}<br />
+                        State: {{ shipping_info.shipping_state }}<br />
+                        Postal Code: {{ shipping_info.shipping_zipcode }}<br />
+                        Country: {{ shipping_info.shipping_country }}<br />
+                        <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
+                    </div>
+                    
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            Billing Info
+                        </div>
+                        {{ billing_form.as_p }}
+                        
                     </div>
                 </div>
-                <button type="submit" class="btn btn-sm btn-outline-secondary">Continue Billing</button>
+                <a href="#" class="btn btn-secondary">Pay Now</a>
 
                 
-                </form>
             </div>
-        </div>
+                    
+
     </div>
 </div>
 

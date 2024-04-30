@@ -4,19 +4,20 @@ from .forms import ShippingForm, PaymentForm
 from .models import ShippingAddress
 from django.contrib import messages
 from payment.models import Order, OrderItem
+from store.models import Product
 # from django.contrib.auth.models import User
 
 def process_order(request):
     if request.POST:
         # Get the cart
         cart = Cart(request)
-        # cart_products = cart.get_prods
-        # quantities = cart.get_quants
+        cart_products = cart.get_prods
+        quantities = cart.get_quants
         totals = cart.totals()
 
         # Get billing info from last page
         payment_form = PaymentForm(request.POST or None)
-        
+
         # Get seassion shipping data
         my_shipping = request.session.get('my_shipping')
 
@@ -33,12 +34,53 @@ def process_order(request):
             # Create Order
             create_order = Order(user=user, full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
             create_order.save()
+
+            # Add order items
+            # Get order ID
+            order_id = create_order.pk
+            # Get product info 
+            for product in cart_products():
+                # Get product ID
+                product_id = product.id
+                # Get price
+                if product.sale:
+                    price = product.sale_price
+                else:
+                    price = product.price
+
+                # Get quantity
+                for key, value in quantities().items():
+                    if int(key) == product.id:
+                        # Create order item
+                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
+                        create_order_item.save()
+
             messages.success(request, "Order Placed")
             return redirect('home')
         else:
             # Not logged in
-            # create_order = Order(user=user, full_name=full_name, email=email, shipping_address=shipping_address, admount_paid=admount_paid)
+            create_order = Order(user=user, full_name=full_name, email=email, shipping_address=shipping_address, admount_paid=admount_paid)
             create_order.save()
+
+            # Add order items
+            # Get order ID
+            order_id = create_order.pk
+            # Get product info 
+            for product in cart_products():
+                # Get product ID
+                product_id = product.id
+                # Get price
+                if product.sale:
+                    price = product.sale_price
+                else:
+                    price = product.price
+
+                # Get quantity
+                for key, value in quantities().items():
+                    if int(key) == product.id:
+                        # Create order item
+                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
+                        create_order_item.save()
 
             messages.success(request, "Order Placed")
             return redirect('home')

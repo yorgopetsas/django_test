@@ -55,6 +55,11 @@ def process_order(request):
                         create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
                         create_order_item.save()
 
+            # Delete cart items
+            for key in list(request.session.keys()):
+                if key == "session_key":
+                    del request.session[key]
+
             messages.success(request, "Order Placed")
             return redirect('home')
         else:

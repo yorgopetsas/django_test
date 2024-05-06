@@ -51,6 +51,7 @@ class Service(models.Model):
     service_price = models.DecimalField(default=0, decimal_places=2, max_digits=7)
     service_deposit = models.CharField(max_length=20, choices=DEPOSIT_CHOICES, blank=True, null=True)
     service_collect = models.CharField(max_length=20, choices=COLLECT_CHOICES, blank=True, null=True)
+    service_client_note = models.CharField(max_length=2000)
 
     def __str__(self):
         return str(self.service_name)

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Shipped Items</h3>
+    
+<br />
+<table class="table table-striped table-hover">
+    <thead>
+        
+      <tr>
+        <th scope="col">ID:</th>
+        <th scope="col">Price</th>
+        <th scope="col">Client email: </th>
+        <th scope="col">Date Shipped</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}  
+      <tr>
+        <td>{{order}}</td>
+        <td>{{order.amount_paid}}</td>
+        <td>{{order.email}}</td>
+        <td>{{order.date_shipped}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+{% endblock %}

@@ -10,15 +10,25 @@
 
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                 {% if user.is_authenticated %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        
-                        <li class="nav-item"><a class="nav-link" href="{% url 'update_user' %}">Update Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'update_info' %}">Update Info</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                    </ul>
-                </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            
+                            <li class="nav-item"><a class="nav-link" href="{% url 'update_user' %}">Update Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'update_info' %}">Update Info</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                    {% if user.is_superuser %}    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dash</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                                <li class="nav-item"><a class="nav-link" href="{% url 'not_shipped_dash' %}">Not Shipped</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'shipped_dash' %}">Shipped</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
                 
 
                 {% else %} 

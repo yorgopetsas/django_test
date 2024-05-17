@@ -2,10 +2,24 @@ from django.shortcuts import render, redirect
 from cart.cart import Cart
 from .forms import ShippingForm, PaymentForm
 from .models import ShippingAddress
-from django.contrib import messages
 from payment.models import Order, OrderItem
+from django.contrib.auth.models import User
+from django.contrib import messages
 from store.models import Product
-# from django.contrib.auth.models import User
+
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, "payment/not_shipped_dash.html", {})
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
+
+def shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, "payment/shipped_dash.html", {})
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
 
 def process_order(request):
     if request.POST:

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Order</h3>
+
+<div class="card">
+    <div class="card-header">
+      Order {{ order.id }} - {{ order.amount_paid }}
+    </div>
+    <div class="card-body">
+      Email:{{ order.email }}
+      {% if order.date_shipped %}
+        Date Shipped: {{ order.date_shipped }}
+      {% else %}
+        Date Ordered:{{ order.date_ordered }}
+      {% endif %}
+      
+      <br />
+      Name: {{ order.full_name }}
+      Shipping Address:{{ order.shipping_address }}
+
+      Items: 
+      {% for item in items%}
+        {{item.product}} - {{item.quantity}} - {{item.price}} <br />
+      {% endfor %}
+      
+      
+    </div>
+  </div>
+  <a href="#" class="btn btn-primary">Go somewhere</a>
+
+
+{{ order.price }}
+{{ items }}
+    
+<br />
+
+{% endblock %}
